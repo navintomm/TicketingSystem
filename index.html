@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="en"> 
+  <head>
+    <title>Ticket Booking</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="images/image-removebg-preview.png" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Poppins:300,300i,400,500,600,700,800,900,900i%7CPT+Serif:400,700">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>.ie-panel{display: none;background: #212121;padding: 10px 0;box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3);clear: both;text-align:center;position: relative;z-index: 1;} html.ie-10 .ie-panel, html.lt-ie-10 .ie-panel {display: block;}</style>
+  </head>
+  <body>
+    
+    <div class="preloader">
+      <div class="preloader-body">
+        <div class="cssload-container">
+          <div class="cssload-speeding-wheel"></div>
+        </div>
+        <p>Loading...</p>
+      </div>
+    </div>
+    <div class="page"><a class="section section-banner d-none d-xl-flex" href="" style="" alt="" width="1600" height="310"></a>
+      <!-- Page Header-->
+      <header class="section page-header">
+       
+        
+      </header>
+
+
+      <style>
+        /* Desktop View */
+        @media (min-width: 768px) {
+            .box-booking {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 20px; /* Adjust the gap as needed */
+            }
+        
+            .grab-tickets-label {
+                font-size: 1.5em; /* Adjust the font size for desktop */
+                margin-bottom: 15px; /* Space between label and buttons */
+                text-align: center; /* Center the text */
+            }
+        
+            .button-container {
+                display: flex;
+                flex-direction: row; /* Align buttons horizontally */
+                gap: 20px; /* Space between buttons */
+                justify-content: center; /* Center buttons horizontally */
+            }
+        
+            .button-container button {
+                width: auto; /* Let buttons take their natural width */
+                padding: 10px 20px; /* Add padding for better button appearance */
+            }
+            body
+            {
+              background-color: #212121;
+            }
+            .main-bunner-img {
+    
+    animation: bgSlideshow 10s infinite linear;
+}
+.main-bunner-img {
+       
+        transition: opacity 1.5s ease-in-out;
+    }
+        }
+        
+        /* Mobile View */
+        .main-bunner-img {
+        
+        transition: opacity 1.5s ease-in-out;
+    }
+            .box-booking {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px; /* Adjust the gap as needed */
+            }
+        
+            .grab-tickets-label {
+                font-size: 1.2em; /* Adjust the font size for mobile */
+                margin-bottom: 10px; /* Space between label and buttons */
+                text-align: center; /* Center the text */
+            }
+        
+            .button-container {
+                display: flex;
+                flex-direction: column; /* Stack buttons vertically */
+                gap: 10px; /* Space between buttons */
+                width: 100%; /* Full width for buttons */
+                align-items: center; /* Center buttons horizontally */
+            }
+        
+            .button-container button {
+                width: 80%; /* Adjust button width */
+                max-width: 200px; /* Set a max-width for buttons */
+            }
+            body
+            {
+              background-color: #212121;
+            }
+        
+        
+        .file-input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .form-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        
+              </style>
+             
+             
+            
+             <script>
+              document.addEventListener("DOMContentLoaded", function () {
+                const images = ["images/4.jpg", "images/8.jpg"];
+                let index = 0;
+                const banner = document.querySelector(".main-bunner-img");
+            
+                function changeBackground() {
+  banner.style.opacity = 0; // Fade out
+  setTimeout(() => {
+    banner.style.backgroundImage = `url("${images[index]}")`; // Fixed syntax
+    banner.style.opacity = 1; // Fade in
+    index = (index + 1) % images.length;
+  }, 1500); // Match transition duration
+}
+            
+                setInterval(changeBackground, 4000); // Change every 4 seconds
+              });
+            </script>
+            
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+const mbcetBtn = document.getElementById("mbcet-btn");
+const nonMbcetBtn = document.getElementById("nonmbcet-btn");
+const bookingForm = document.getElementById("booking-form");
+const branchField = bookingForm.querySelector("[data-field='branch']");
+const semesterField = bookingForm.querySelector("[data-field='semester']");
+
+// Ensure the form is hidden at start
+bookingForm.style.display = "none";
+
+// Show form and enable all fields when MBCET is clicked
+mbcetBtn.addEventListener("click", function () {
+    bookingForm.style.display = "flex";
+    branchField.style.display = "block";
+    semesterField.style.display = "block";
+});
+
+// Show form but hide branch and semester when Non-MBCET is clicked
+nonMbcetBtn.addEventListener("click", function () {
+    bookingForm.style.display = "flex";
+    branchField.style.display = "none";
+    semesterField.style.display = "none";
+});
+});
+
+
+
+    
+    
+    
+    
+    
+    
+          </script>
+
+
+      <!-- Swiper-->
+      <section class="section section-lg section-main-bunner section-main-bunner-filter text-center">
+        <div class="main-bunner-img" style="background-image: url(&quot;images/ogpremam.jpg&quot;); background-size:cover;" ></div>
+        <div class="main-bunner-inner">
+          <div class="container">
+            <div class="box-default">
+              <h1 class="box-default-title">Premam</h1>
+              <div class="box-default-decor"></div>
+              <p class="big box-default-text"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="bg-gray-1">
+        <section class="section-transform-top">
+          <div class="container">
+            <div class="box-booking">
+              <label style="top: 100px;" class="grab-tickets-label">Grab your tickets</label>
+              <div class="payment-options" style="text-align: center; margin: 15px 0;">
+                <a href="upi://pay?pa=navintom209@okhdfcbank&pn=Illumina&am=60&cu=INR&tn=Premam%20Movie%20Ticket" 
+                   class="button button-lg button-gray-600">
+                   Pay ₹60 with UPI
+              </a>
+              </div>
+            <!-- <div class="qr-code-container" style="text-align: center; margin: 15px 0;">
+                <p>Scan QR code to pay</p>
+                <img src="/images/WhatsApp Image 2025-03-17 at 17.14.34_25c00a1f.jpg" alt="Payment QR Code" style="max-width: 150px; height: auto;">
+              </div> -->
+
+              <button id="mbcet-btn" class="button button-lg button-gray-600">MBCET</button>
+<button id="nonmbcet-btn" class="button button-lg button-gray-600" style="bottom: 15px;;">Non MBCET</button>
+              <form class="rd-form rd-mailform booking-form" id="booking-form" novalidate>
+
+                <div>
+                    <p class="booking-title">Name</p>
+                    <div class="form-wrap">
+                        <input class="form-input" id="booking-name" type="text" name="name" required placeholder="Enter your name">
+                        <label class="form-label" for="booking-name"></label>
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+            
+
+                <div >
+                  <p class="booking-title">Mail-id</p>
+                  <div class="form-wrap">
+                    <input class="form-input" id="booking-email" type="email" name="email" data-constraints="@Required" placeholder="Enter your mail-id">
+                    <label class="form-label" for="booking-email"></label>
+                  </div>
+                </div>
+
+
+
+                <div>
+                    <p class="booking-title">Phone</p>
+                    <div class="form-wrap">
+                        <input class="form-input" id="booking-phone" type="text" name="phone"  pattern="[0-9]{10}" placeholder="Enter your phone no.">
+                        <label class="form-label" for="booking-phone"></label>
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+            
+                <div data-field="branch">
+                    <p class="booking-title">Branch</p>
+                    <div class="form-wrap">
+                        <select id="booking-branch" name="branch" required>
+                            <option value="" disabled selected></option>
+                            <option>CSE</option>
+                            <option>EL</option>
+                            <option>EEE</option>
+                            <option>MECH</option>
+                            <option>EC</option>
+                            <option>CT</option>
+                            <option>CIVIL</option>
+                        </select>
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+            
+                <div data-field="semester">
+                    <p class="booking-title">Semester</p>
+                    <div class="form-wrap">
+                        <select id="booking-semester" name="semester" required>
+                            <option value="" disabled selected></option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                        </select>
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+                <div class="file-input-container">
+                  <p class="booking-title">Upload</p>
+                  <div class="form-wrap">
+                    <input type="file" id="screenshot" name="screenshot" class="file-input" required>
+              </div>
+              </div>
+                <div>
+                    <button class="button button-lg button-gray-600" type="submit">BOOK NOW</button>
+                </div>
+            </form>
+            
+            <style>
+                .form-input, select {
+                    width: 100%;
+                    padding: 8px;
+                    border: 2px solid #ccc;
+                    border-radius: 5px;
+                    outline: none;
+                }
+            
+                
+            
+                
+            </style>
+              
+            
+            </div>
+          </div>
+        </section>
+        <section class="section section-lg section-inset-1 bg-gray-1 pt-lg-0">
+          <div class="container">
+            <div class="row row-50 justify-content-xl-between align-items-lg-center">
+              <div class="col-lg-6 wow fadeInLeft">
+                <div class="box-image"><img class="box-image-static" src="https://assets-in.bmscdn.com/iedb/movies/images/mobile/thumbnail/xlarge/premam-et00030800-22-09-2017-11-22-32.jpg" alt=""/>
+                </div>
+              </div>
+              <div class="col-lg-6 col-xl-5 wow fadeInRight">
+                <h2>About the movie</h2>
+                <p>Premam is all about romance and fun, though there is more to it. The life of a person going through various phases is the premise of the story. Infatuation, romance, first love, pain of separation all those emotions that we all come across in our lives are discussed in an interesting way.</p>
+                <button class="button button-lg button-gray-600" onclick="window.open('https://youtu.be/pbgvTikmIMk', '_blank');">Watch Trailer</button>
+              </div>
+              
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- Featured Offers-->
+      <section class="section section-lg bg-default">
+        <div class="container">
+          <div class="row justify-content-center text-center">
+            <div class="col-md-9 col-lg-7 wow-outer">
+              <div class="wow slideInDown">
+                <h2>Cast</h2>
+                
+              </div>
+            </div>
+          </div>
+          <div class="row row-20 row-lg-30">
+            <div class="col-md-6 col-lg-4 wow-outer">
+              <div class="wow fadeInUp">
+                <div class="product-featured">
+                  <div class="product-featured-figure"><img src="https://in.bmscdn.com/iedb/artist/images/website/poster/large/nivin-pauly-30511-1657870897.jpg" alt="" width="370" height="395"/>
+                    
+                  </div>
+                  <div>
+                    <p ><strong>Nivin Pauly</strong> as George David.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 wow-outer">
+              <div class="wow fadeInUp">
+                <div class="product-featured">
+                  <div class="product-featured-figure"><img src="https://in.bmscdn.com/iedb/artist/images/website/poster/large/anupama-parameswaran-1063607-1670497994.jpg" alt="" width="370" height="395"/>
+                    
+                  </div>
+                  <div>
+                    <p ><strong>Anupama Parameswaran</strong> as Mary George.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 wow-outer">
+              <div class="wow fadeInUp">
+                <div class="product-featured">
+                  <div class="product-featured-figure"><img src="https://assets-in.bmscdn.com/iedb/artist/images/website/poster/large/sai-pallavi-1065111-1738142313.jpg" alt="" width="370" height="395"/>
+                    
+                  </div>
+                  <div>
+                    <p ><strong>Sai Pallavi</strong> as Malar.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 wow-outer">
+              <div class="wow fadeInUp">
+                <div class="product-featured">
+                  <div class="product-featured-figure"><img src="https://in.bmscdn.com/iedb/artist/images/website/poster/large/althaf-salim-1085629-1657017392.jpg" alt="" width="370" height="395"/>
+                    
+                  </div>
+                  <div>
+                    <p ><strong>Althaf Salim</strong> as Jahangir.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 wow-outer">
+              <div class="wow fadeInUp">
+                <div class="product-featured">
+                  <div class="product-featured-figure"><img src="https://in.bmscdn.com/iedb/artist/images/website/poster/large/madonna-sebastian-1063706-07-12-2021-05-58-54.jpg" alt="" width="370" height="395"/>
+                    
+                  </div>
+                  <div>
+                    <p ><strong>Madonna Sebastian</strong> as Celine George.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 wow-outer">
+              <div class="wow fadeInUp">
+                <div class="product-featured">
+                  <div class="product-featured-figure"><img src="https://in.bmscdn.com/iedb/artist/images/website/poster/large/jude-anthany-joseph-1043008-02-07-2021-03-25-49.jpg" alt="" width="370" height="395"/>
+                    
+                  </div>
+                  <div>
+                    <p ><strong>Jude Anthany Jooseph</strong> as Dolly D'Cruze.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 wow-outer">
+              <div class="wow fadeInUp">
+                <div class="product-featured">
+                  <div class="product-featured-figure"><img src="https://in.bmscdn.com/iedb/artist/images/website/poster/large/maniyanpilla-raju-18342-24-03-2017-17-51-27.jpg" alt="" width="370" height="395"/>
+                    
+                  </div>
+                  <div>
+                    <p ><strong>Maniyanpilla Raju</strong> as Principal.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-6 col-lg-4 wow-outer">
+              <div class="wow fadeInUp">
+                <div class="product-featured">
+                  <div class="product-featured-figure"><img src="https://in.bmscdn.com/iedb/artist/images/website/poster/large/siju-wilson-1069906-22-02-2022-05-37-52.jpg" alt="" width="370" height="395"/>
+                  </div>
+                  <div>
+                    <p ><strong>Siju Wilson</strong> as Jojo.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 wow-outer">
+              <div class="wow fadeInUp">
+                <div class="product-featured">
+                  <div class="product-featured-figure"><img src="https://assets-in.bmscdn.com/iedb/artist/images/website/poster/large/sv-krishna-shankar-2020630-1661151460.jpg" alt="" width="370" height="395"/>
+                  </div>
+                  <div>
+                    <p ><strong>S.V. Krishna Shankar</strong> as Koya.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 wow-outer">
+              <div class="wow fadeInUp">
+                <div class="product-featured">
+                  <div class="product-featured-figure"><img src="https://assets-in.bmscdn.com/iedb/artist/images/website/poster/large/george-kora-1085709-1668063361.jpg" alt="" width="370" height="395"/>
+                  </div>
+                  <div>
+                    <p ><strong>George Kora</strong> as Actor.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+     
+        
+      </section><a class="section section-banner" href="" style="" alt="" width="1600" height="310"></a>
+      <!-- Page Footer-->
+      <footer class="section footer-minimal context-dark">
+        <div class="container wow-outer">
+          <div class="wow fadeIn">
+            <div class="row row-60">
+              
+              
+              <div class="col-12">
+                <ul class="social-list">
+            
+                  <li><a class="icon icon-sm icon-circle icon-circle-md icon-bg-white fa-instagram" href="https://www.instagram.com/illuminambcet?igsh=MXRtcmFhc2l0dWg4aQ=="></a></li>
+                </ul>
+              </div>
+            </div>
+            <p class="rights"><span>&copy;&nbsp; </span><span class="copyright-year"></span><span>&nbsp;</span><span>Illumina All rights reserved.</span>
+          </div>
+        </div>
+      </footer>
+    
+    <div class="snackbars" id="form-output-global"></div>
+    
+    <script src="js/core.min.js"></script> 
+    <script src="js/script.js"></script>
+
+
+    <!-- Add these Firebase SDK script tags right before your closing </body> tag -->
+<!-- First add the core Firebase JS SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+<!-- Then replace your existing Firebase script with this one -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const bookingForm = document.getElementById('booking-form');
+
+    if (!bookingForm) {
+        console.error("Booking form not found!");
+        return;
+    }
+
+    bookingForm.removeAttribute('action');
+    bookingForm.removeAttribute('method');
+
+    const formWraps = bookingForm.querySelectorAll('.form-wrap');
+    formWraps.forEach(wrap => {
+        if (!wrap.querySelector('.error-message')) {
+            const errorSpan = document.createElement('span');
+            errorSpan.className = 'error-message';
+            errorSpan.style.color = 'red';
+            errorSpan.style.fontSize = '12px';
+            wrap.appendChild(errorSpan);
+        }
+    });
+
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyD7NBmwNls289FJMN5U7zybiQzkHo1jMUA",
+        authDomain: "ticketing-system-ad3d3.firebaseapp.com",
+        projectId: "ticketing-system-ad3d3",
+        storageBucket: "ticketing-system-ad3d3.appspot.com",
+        messagingSenderId: "38135620101",
+        appId: "1:38135620101:web:cfc441378eef7673fff26c",
+        measurementId: "G-HPCNLJ96Q9"
+    };
+
+    // Initialize Firebase
+    if (!firebase.apps?.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    async function clearAllBookings() {
+  try {
+    const bookingsRef = db.collection('bookings');
+    const snapshot = await bookingsRef.get();
+    
+    // Delete each document in a batch
+    const batch = db.batch();
+    snapshot.docs.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+    
+    await batch.commit();
+    console.log("All booking records have been cleared");
+    return true;
+  } catch (error) {
+    console.error("Error clearing bookings:", error);
+    return false;
+  }
+}
+
+// Call this once to clear all bookings
+clearAllBookings();
+
+
+    // Reset the ticket counter to 0 
+// You can run this once to reset the counter
+async function resetTicketCounter() {
+  try {
+    const counterRef = db.collection('counters').doc('tickets');
+    await counterRef.set({ value: 0 });
+    console.log("Ticket counter has been reset to 0");
+    return true;
+  } catch (error) {
+    console.error("Error resetting ticket counter:", error);
+    return false;
+  }
+}
+
+// Call this function when you want to reset
+resetTicketCounter();
+
+    function validateForm() {
+        let isValid = true;
+        const errorMessages = bookingForm.querySelectorAll('.error-message');
+        errorMessages.forEach(el => el.textContent = '');
+        
+        const name = bookingForm.querySelector('#booking-name').value.trim();
+        const email = bookingForm.querySelector('#booking-email').value.trim();
+        const phone = bookingForm.querySelector('#booking-phone').value.trim();
+        const branch = bookingForm.querySelector('#booking-branch')?.value;
+        const semester = bookingForm.querySelector('#booking-semester')?.value;
+        const screenshot = bookingForm.querySelector('#screenshot').files[0];
+        
+        // Validate name
+        if (!name) {
+            const errorEl = bookingForm.querySelector('#booking-name').closest('.form-wrap').querySelector('.error-message');
+            if (errorEl) errorEl.textContent = 'Please enter your name';
+            isValid = false;
+        }
+        
+        // Validate email
+        if (!email) {
+            const errorEl = bookingForm.querySelector('#booking-email').closest('.form-wrap').querySelector('.error-message');
+            if (errorEl) errorEl.textContent = 'Please enter your email';
+            isValid = false;
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            const errorEl = bookingForm.querySelector('#booking-email').closest('.form-wrap').querySelector('.error-message');
+            if (errorEl) errorEl.textContent = 'Please enter a valid email';
+            isValid = false;
+        }
+        
+        // Validate phone
+        if (!phone) {
+            const errorEl = bookingForm.querySelector('#booking-phone').closest('.form-wrap').querySelector('.error-message');
+            if (errorEl) errorEl.textContent = 'Please enter your phone number';
+            isValid = false;
+        } else if (!/^[0-9]{10}$/.test(phone)) {
+            const errorEl = bookingForm.querySelector('#booking-phone').closest('.form-wrap').querySelector('.error-message');
+            if (errorEl) errorEl.textContent = 'Please enter a valid 10-digit phone number';
+            isValid = false;
+        }
+        
+        // Only validate branch and semester if they are visible
+        if (bookingForm.querySelector('[data-field="branch"]').style.display !== 'none') {
+            if (!branch) {
+                const errorEl = bookingForm.querySelector('#booking-branch').closest('.form-wrap').querySelector('.error-message');
+                if (errorEl) errorEl.textContent = 'Please select your branch';
+                isValid = false;
+            }
+        }
+        
+        if (bookingForm.querySelector('[data-field="semester"]').style.display !== 'none') {
+            if (!semester) {
+                const errorEl = bookingForm.querySelector('#booking-semester').closest('.form-wrap').querySelector('.error-message');
+                if (errorEl) errorEl.textContent = 'Please select your semester';
+                isValid = false;
+            }
+        }
+        
+        // Validate screenshot
+       if (bookingForm.querySelector('#screenshot').style.display !== 'none'){
+    if (!screenshot) {
+        const errorEl = bookingForm.querySelector('#screenshot').closest('.form-wrap').querySelector('.error-message');
+        if (errorEl) errorEl.textContent = 'Please upload a payment screenshot';
+        isValid = false;
+    }
+  }
+  return isValid; 
+      }
+    
+    // Upload to Cloudinary
+    async function uploadToCloudinary(file) {
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'ticketbooking'); // Use your Cloudinary upload preset
+
+            const response = await fetch('https://api.cloudinary.com/v1_1/drd1inr9x/image/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Upload failed');
+            }
+
+            const data = await response.json();
+            return data.secure_url;
+        } catch (error) {
+            console.error("Error uploading to Cloudinary:", error);
+            throw error;
+        }
+    }
+    
+    // Generate a unique FCFS ticket ID
+    async function generateUniqueTicketId() {
+        // Get counter document
+        const counterRef = db.collection('counters').doc('tickets');
+        
+        // Use a transaction to ensure we get a unique, sequential number
+        try {
+            const ticketNum = await db.runTransaction(async (transaction) => {
+                const counterDoc = await transaction.get(counterRef);
+                
+                // If counter document doesn't exist, create it with initial value
+                if (!counterDoc.exists) {
+                    transaction.set(counterRef, { value: 1 });
+                    return 1;
+                }
+                
+                // Get current value and increment by 1
+                const currentValue = counterDoc.data().value;
+                const nextValue = currentValue + 1;
+                
+                // Update the counter in the database
+                transaction.update(counterRef, { value: nextValue });
+                
+                return nextValue;
+            });
+            
+            // Format as TKT followed by 4-digit padded number
+            return 'TKTRYDAN' + String(ticketNum).padStart(4, '0');
+        } catch (error) {
+            console.error("Error generating ticket ID:", error);
+            // Fallback to timestamp-based ID if transaction fails
+            const timestamp = new Date().getTime();
+            return 'TKTTRYDAN' + timestamp.toString().slice(-4);
+        }
+        // Reset the ticket counter to 0 
+
+    }
+
+    // Function to send booking data to local backend
+    async function sendToBackend(formData) {
+        try {
+            console.log("Starting backend request...");
+            
+            const response = await fetch("http://localhost:5000/book", {
+                method: "POST",
+                body: formData,
+            });
+            
+            console.log("Backend response status:", response.status);
+            
+            // Check if response is ok, regardless of content type
+            if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Server responded with ${response.status}: ${errorText}`);
+}
+            
+            // Try to parse as JSON, but don't fail if it's not JSON
+            let result;
+            try {
+                const text = await response.text();
+                if (text.trim()) {
+                    result = JSON.parse(text);
+                }
+            } catch (e) {
+                console.log("Response is not JSON, but that's ok");
+            }
+            
+            return { success: true, data: result };
+        } catch (error) {
+            console.error("Backend connection error:", error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    function setLoading(isLoading) {
+        const submitBtn = bookingForm.querySelector('button[type="submit"]');
+        if (isLoading) {
+            submitBtn.textContent = 'Processing...';
+            submitBtn.disabled = true;
+        } else {
+            submitBtn.textContent = 'BOOK NOW';
+            submitBtn.disabled = false;
+        }
+    }
+    
+    // Show success message
+    function showSuccessMessage(ticketId) {
+        const successDiv = document.createElement('div');
+        successDiv.style.backgroundColor = '#dff0d8';
+        successDiv.style.color = '#3c763d';
+        successDiv.style.padding = '15px';
+        successDiv.style.borderRadius = '5px';
+        successDiv.style.marginTop = '20px';
+        successDiv.style.textAlign = 'center';
+        
+        successDiv.innerHTML = `
+            <h3>Booking Successful!</h3>
+            <p>Your ticket ID is: <strong>${ticketId}</strong></p>
+            <p>Please save this ticket ID. You will need it for entry.</p>
+            <p>A confirmation email has been sent to your email address.</p>
+        `;
+        
+        bookingForm.parentNode.insertBefore(successDiv, bookingForm.nextSibling);
+        
+        // Hide the form
+        bookingForm.style.display = 'none';
+        
+        // Scroll to the success message
+        successDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Form submission handler
+    async function handleSubmit(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (!validateForm()) {
+            return false;
+        }
+        
+        setLoading(true);
+        
+        try {
+            // Get form data
+            const name = bookingForm.querySelector('#booking-name').value.trim();
+            const email = bookingForm.querySelector('#booking-email').value.trim();
+            const phone = bookingForm.querySelector('#booking-phone').value.trim();
+            const branch = bookingForm.querySelector('#booking-branch')?.value || "Non-MBCET";
+            const semester = bookingForm.querySelector('#booking-semester')?.value || "N/A";
+            const screenshot = bookingForm.querySelector('#screenshot').files[0];
+            
+            // Check if email or phone already used
+            const existingBookingsSnapshot = await db.collection('bookings')
+                .where('email', '==', email)
+                .limit(1)
+                .get();
+                
+                if (!existingBookingsSnapshot.empty) {
+  const emailMsg = document.createElement('div');
+  emailMsg.id = 'email-loading-message';
+  emailMsg.style.backgroundColor = '#d9edf7';
+  emailMsg.style.color = '#31708f';
+  emailMsg.style.padding = '15px';
+  emailMsg.style.borderRadius = '5px';
+  emailMsg.style.marginTop = '20px';
+  emailMsg.style.textAlign = 'center';
+  emailMsg.innerHTML = '<p>This email has already been used for a booking.</p>';
+  const bookNowButton = bookingForm.querySelector('button[type="submit"]');
+  bookNowButton.insertAdjacentElement('afterend', emailMsg);
+  
+  // Add event listener to email input to remove the message when focused
+  const emailInput = bookingForm.querySelector('input[type="email"]'); // Adjust selector to match your email input
+  emailInput.addEventListener('focus', function() {
+    const existingMsg = document.getElementById('email-loading-message');
+    if (existingMsg) {
+      existingMsg.remove();
+    }
+  });
+  
+  setLoading(false);
+  return false;
+}
+            
+            const existingPhoneSnapshot = await db.collection('bookings')
+                .where('phone', '==', phone)
+                .limit(1)
+                .get();
+                
+                if (!existingPhoneSnapshot.empty) {
+  const phnMsg = document.createElement('div');
+  phnMsg.id = 'phone-loading-message'; // Changed ID to be unique
+  phnMsg.style.backgroundColor = '#d9edf7';
+  phnMsg.style.color = '#31708f';
+  phnMsg.style.padding = '15px';
+  phnMsg.style.borderRadius = '5px';
+  phnMsg.style.marginTop = '20px';
+  phnMsg.style.textAlign = 'center';
+  phnMsg.innerHTML = '<p>This phone has already been used for a booking.</p>';
+  
+  const bookNowButton = bookingForm.querySelector('button[type="submit"]');
+  bookNowButton.insertAdjacentElement('afterend', phnMsg);
+  
+  // Corrected selector for phone input - use the correct type
+  const phnInput = bookingForm.querySelector('input[name="phone"]'); // or input[type="tel"]
+  phnInput.addEventListener('focus', function() {
+    const phMsg = document.getElementById('phone-loading-message'); // Match the ID
+    if (phMsg) {
+      phMsg.remove();
+    }
+  });
+  
+  setLoading(false);
+  return false;
+}
+            
+            // Upload screenshot to Cloudinary
+            console.log("Uploading screenshot...");
+            const screenshotURL = await uploadToCloudinary(screenshot);
+            console.log("Screenshot uploaded:", screenshotURL);
+            
+            // Generate ticket ID - using FCFS approach
+            const ticketId = await generateUniqueTicketId();
+            console.log("Generated ticket ID:", ticketId);
+            
+            // Create booking data
+            const bookingData = {
+                name: name,
+                email: email,
+                phone: phone,
+                branch: branch,
+                semester: semester,
+                screenshotURL: screenshotURL,
+                ticketId: ticketId,
+                eventName: 'Premam',
+                eventDate: 'March 29, 2025',
+                eventTime: '11:00 AM',
+                eventVenue: 'Vishveshwarya Hall',
+                createdAt: new Date().toISOString()
+            };
+            
+            // Save to Firestore
+            console.log("Saving booking to Firestore...");
+            await db.collection('bookings').add({
+                ...bookingData,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            console.log("Booking saved successfully!");
+            
+            // Create FormData for the backend
+            const formData = new FormData();
+            Object.entries(bookingData).forEach(([key, value]) => {
+                formData.append(key, value);
+            });
+            
+            // Show loading message
+            const loadingMsg = document.createElement('div');
+            loadingMsg.id = 'email-loading-message';
+            loadingMsg.style.backgroundColor = '#d9edf7';
+            loadingMsg.style.color = '#31708f';
+            loadingMsg.style.padding = '15px';
+            loadingMsg.style.borderRadius = '5px';
+            loadingMsg.style.marginTop = '20px';
+            loadingMsg.style.textAlign = 'center';
+            loadingMsg.innerHTML = '<p>Sending confirmation email... Please wait.</p>';
+            bookingForm.parentNode.insertBefore(loadingMsg, bookingForm.nextSibling);
+            
+            // Send to backend and wait for result
+            console.log("Sending data to backend for email...");
+            const emailResult = await sendToBackend(formData);
+            
+            // Remove loading message
+            if (document.getElementById('email-loading-message')) {
+                document.getElementById('email-loading-message').remove();
+            }
+            
+            if (!emailResult.success) {
+  const errMsg = document.createElement('div');
+  errMsg.id = 'email-error-message';
+  errMsg.style.backgroundColor = '#d9edf7';
+  errMsg.style.color = '#31708f';
+  errMsg.style.padding = '15px';
+  errMsg.style.borderRadius = '5px';
+  errMsg.style.marginTop = '20px';
+  errMsg.style.textAlign = 'center';
+  errMsg.innerHTML = '<p>Booking was saved, but there was an issue sending the confirmation email. Please contact us.</p>';
+  console.error("Email backend error:", emailResult.error);
+  
+  // Insert the error message after the "Book Now" button
+  const bookNowButton = bookingForm.querySelector('button[type="submit"]');
+  bookNowButton.insertAdjacentElement('afterend', errMsg);
+  
+  // Function to remove all message elements
+  const removeAllMessages = function() {
+    const messages = document.querySelectorAll('#email-error-message, #email-loading-message, #phone-loading-message');
+    messages.forEach(msg => {
+      if (msg) {
+        msg.remove();
+      }
+    });
+  };
+  
+  // Add event listener to the "Book Now" button
+  bookNowButton.addEventListener('click', removeAllMessages);
+  
+  // Add event listeners to all input fields
+  const allInputs = bookingForm.querySelectorAll('input, textarea, select');
+  allInputs.forEach(input => {
+    input.addEventListener('focus', removeAllMessages);
+  });
+}
+            else{
+              // Show success message only after email is sent
+              showSuccessMessage(ticketId);
+            }
+           
+            
+        } catch (error) {
+            console.error("Critical booking error:", error);
+            const errMsg = document.createElement('div');
+  errMsg.id = 'email-loading-message';
+  errMsg.style.backgroundColor = '#d9edf7';
+  errMsg.style.color = '#31708f';
+  errMsg.style.padding = '15px';
+  errMsg.style.borderRadius = '5px';
+  errMsg.style.marginTop = '20px';
+  errMsg.style.textAlign = 'center';
+  errMsg.innerHTML = '<p>An error occurred while processing your booking. Please try again.</p>';
+            const bookNowButton = bookingForm.querySelector('button[type="submit"]');
+  bookNowButton.insertAdjacentElement('afterend', errMsg);
+        } finally {
+            setLoading(false);
+        }
+        
+        return false;
+    }
+    
+    // Attach event listener to form
+    bookingForm.addEventListener('submit', handleSubmit);
+    
+    // Also attach to button for redundancy
+    const submitButton = bookingForm.querySelector('button[type="submit"]');
+    if (submitButton) {
+        submitButton.addEventListener('click', function(e) {
+            if (e.target.type === 'submit') {
+                handleSubmit(e);
+            }
+        });
+    }
+    
+    console.log("Booking form handlers initialized successfully");
+});
+</script>
+      
+    
+      
+    
+    
+    </body>
+  </html>
