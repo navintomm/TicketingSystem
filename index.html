@@ -178,8 +178,34 @@ nonMbcetBtn.addEventListener("click", function () {
     
     
           </script>
+<script>
+          document.addEventListener("DOMContentLoaded", function () {
+            const upiID = "6282527929@pthdfc"; // Your Paytm UPI ID
+            const transactionId = "T" + Date.now();
+            const orderId = "ORD" + Math.floor(Math.random() * 1000000);
+            const amount = "60.00"; // Updated amount to ₹60
+            const merchantName = "Navin";
+            const note = "Payment for Premam Re-release";
+        
+            // UPI deep link
+            const upiLink = `upi://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionId}&tr=${orderId}&tn=${note}&am=${amount}&cu=INR`;
+        
+            // Google Pay specific intent link
+            const gpayIntentLink = `intent://upi/pay?pa=${upiID}&pn=${merchantName}&tid=${transactionId}&tr=${orderId}&tn=${note}&am=${amount}&cu=INR#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end;`;
+        
+            document.getElementById("gpayButton").addEventListener("click", function (event) {
+                event.preventDefault(); // Prevent default link behavior
+                
+                const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+                if (/android/i.test(userAgent)) {
+                    window.location.href = gpayIntentLink; // Open Google Pay on Android
+                } else {
+                    window.location.href = upiLink; // Open default UPI app
+                }
+            });
+        });
 
-
+</script>
       <!-- Swiper-->
       <section class="section section-lg section-main-bunner section-main-bunner-filter text-center">
         <div class="main-bunner-img" style="background-image: url(&quot;images/ogpremam.jpg&quot;); background-size:cover;" ></div>
@@ -200,8 +226,9 @@ nonMbcetBtn.addEventListener("click", function () {
               <label style="top: 100px;" class="grab-tickets-label">Grab your tickets</label>
               <div style="text-align: center; margin: 20px;">
                 <h3>Scan to Pay</h3>
-                <img src="/images/WhatsApp Image 2025-03-19 at 08.33.42_436fac28.jpg" alt="UPI QR Code" width="250">
-                <p>Scan the QR code with any UPI app to pay ₹60 for Premam Movie Ticket.</p>
+                <a id="gpayButton" class="button button-lg button-gray-600">
+                  Pay ₹60 with UPI
+              </a>
             </div>
             <!-- <div class="qr-code-container" style="text-align: center; margin: 15px 0;">
                 <p>Scan QR code to pay</p>
@@ -510,7 +537,7 @@ nonMbcetBtn.addEventListener("click", function () {
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const bookingForm = document.getElementById('booking-form');
@@ -553,12 +580,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize EmailJS
     // Replace with your actual EmailJS user ID
-    const EMAILJS_USER_ID = "e1qVT0DmPI8dQMwvJ";
-    const EMAILJS_SERVICE_ID = "service_0pkaflt";
-    const EMAILJS_TEMPLATE_ID = "template_2dbqjgi";
-    
-    // Initialize EmailJS with your user ID
-    emailjs.init("e1qVT0DmPI8dQMwvJ");
+
 
     async function clearAllBookings() {
         try {
@@ -770,13 +792,47 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
     // Function to send confirmation email using EmailJS
-    async function sendConfirmationEmail(bookingData) {
-        try {
-            console.log("Sending confirmation email...");
-            
-            const templateParams = {
-            email: bookingData.email,              // Recipient email
-            name: bookingData.name,      // Changed from 'name' to 'recipient_name'
+    const emailjsConfigs = [
+    {
+        userId: "e1qVT0DmPI8dQMwvJ",  // Current EmailJS user ID with 190 emails remaining
+        serviceId: "service_0pkaflt",
+        templateId: "template_2dbqjgi"
+    },
+    {
+        userId: "VF8ZJmxkyWdWMp9_Z",  // New EmailJS user ID with 200 emails
+        serviceId: "service_lc5qqnt",    // New service ID for the second account
+        templateId: "template_h29ys5m"   // New template ID for the second account
+    }
+];
+
+let currentConfigIndex = 0;
+const MAX_RETRY_ATTEMPTS = 3; // Set maximum retry attempts
+
+// Function to switch to the next EmailJS configuration
+function switchEmailJSConfig() {
+    if (currentConfigIndex < emailjsConfigs.length - 1) {
+        currentConfigIndex++;  // Switch to the next configuration
+        const newConfig = emailjsConfigs[currentConfigIndex];
+        emailjs.init(newConfig.userId);
+        console.log("Switched to a new EmailJS account:", newConfig.userId);
+        return true;
+    } else {
+        console.log("All EmailJS accounts have been used. No more requests left.");
+        return false;
+    }
+}
+
+// Initialize EmailJS with the first configuration
+emailjs.init(emailjsConfigs[currentConfigIndex].userId);
+
+async function sendConfirmationEmail(bookingData, retryCount = 0) {
+    try {
+        console.log("Sending confirmation email...");
+        const currentConfig = emailjsConfigs[currentConfigIndex];
+        
+        const templateParams = {
+            email: bookingData.email,
+            name: bookingData.name,
             finalTicketId: bookingData.ticketId,
             eventName: bookingData.eventName,
             eventDate: bookingData.eventDate,
@@ -787,21 +843,41 @@ document.addEventListener('DOMContentLoaded', function () {
             semester: bookingData.semester
         };
         
-        // Send with explicit sender configuration
         const response = await emailjs.send(
-            EMAILJS_SERVICE_ID, 
-            EMAILJS_TEMPLATE_ID,
+            currentConfig.serviceId,
+            currentConfig.templateId,
             templateParams,
-            EMAILJS_USER_ID  // Make sure this is included
+            currentConfig.userId
         );
+        
+        console.log("Email sent successfully:", response);
+        return true;
+    } catch (error) {
+        console.error("Error sending email:", error);
+        
+        // More robust error detection for quota issues
+        const isQuotaError = 
+            (error.text && (
+                error.text.includes("quota exceeded") || 
+                error.text.includes("daily limit") ||
+                error.text.includes("monthly limit")
+            )) || 
+            (error.status === 429); // Common HTTP status for rate limiting
+        
+        // Check if the error is due to API quota limit
+        if (isQuotaError && retryCount < MAX_RETRY_ATTEMPTS) {
+            console.log(`API quota exceeded. Attempt ${retryCount + 1}/${MAX_RETRY_ATTEMPTS}`);
             
-            console.log("Email sent successfully:", response);
-            return true;
-        } catch (error) {
-            console.error("Error sending email:", error);
-            return false;
+            // Try to switch to next configuration
+            if (switchEmailJSConfig()) {
+                return sendConfirmationEmail(bookingData, retryCount + 1);  // Retry with the new configuration
+            }
         }
+        
+        // If the error is not related to the quota or we've exceeded retry attempts
+        return false;
     }
+}
     
     // Form submission handler
     async function handleSubmit(e) {
