@@ -509,6 +509,7 @@ nonMbcetBtn.addEventListener("click", function () {
 <!-- Add Firebase products that you want to use -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -550,6 +551,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     const db = firebase.firestore();
 
+    // Initialize EmailJS
+    // Replace with your actual EmailJS user ID
+    const EMAILJS_USER_ID = "e1qVT0DmPI8dQMwvJ";
+    const EMAILJS_SERVICE_ID = "service_0pkaflt";
+    const EMAILJS_TEMPLATE_ID = "template_2dbqjgi";
+    
+    // Initialize EmailJS with your user ID
+    emailjs.init("e1qVT0DmPI8dQMwvJ");
+
     async function clearAllBookings() {
         try {
             const bookingsRef = db.collection('bookings');
@@ -569,7 +579,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return false;
         }
     }
-
+    clearAllBookings();
     async function resetTicketCounter() {
         try {
             const counterRef = db.collection('counters').doc('tickets');
@@ -581,6 +591,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return false;
         }
     }
+    resetTicketCounter();
 
     function validateForm() {
         let isValid = true;
@@ -736,7 +747,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <h3>Booking Successful!</h3>
             <p>Your ticket ID is: <strong>${ticketId}</strong></p>
             <p>Please save this ticket ID. You will need it for entry.</p>
-            
+            <p>A confirmation email has been sent to your email address.</p>
         `;
         
         bookingForm.parentNode.insertBefore(successDiv, bookingForm.nextSibling);
@@ -756,6 +767,40 @@ document.addEventListener('DOMContentLoaded', function () {
                 msg.remove();
             }
         });
+    }
+    
+    // Function to send confirmation email using EmailJS
+    async function sendConfirmationEmail(bookingData) {
+        try {
+            console.log("Sending confirmation email...");
+            
+            const templateParams = {
+            email: bookingData.email,              // Recipient email
+            name: bookingData.name,      // Changed from 'name' to 'recipient_name'
+            finalTicketId: bookingData.ticketId,
+            eventName: bookingData.eventName,
+            eventDate: bookingData.eventDate,
+            eventTime: bookingData.eventTime,
+            eventVenue: bookingData.eventVenue,
+            phone: bookingData.phone,
+            branch: bookingData.branch,
+            semester: bookingData.semester
+        };
+        
+        // Send with explicit sender configuration
+        const response = await emailjs.send(
+            EMAILJS_SERVICE_ID, 
+            EMAILJS_TEMPLATE_ID,
+            templateParams,
+            EMAILJS_USER_ID  // Make sure this is included
+        );
+            
+            console.log("Email sent successfully:", response);
+            return true;
+        } catch (error) {
+            console.error("Error sending email:", error);
+            return false;
+        }
     }
     
     // Form submission handler
@@ -876,6 +921,9 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             console.log("Booking saved successfully!");
             
+            // Send confirmation email
+            await sendConfirmationEmail(bookingData);
+            
             // Show success message
             showSuccessMessage(ticketId);
             
@@ -883,8 +931,8 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error("Critical booking error:", error);
             const errMsg = document.createElement('div');
             errMsg.id = 'email-loading-message';
-            errMsg.style.backgroundColor = '#d9edf7';
-            errMsg.style.color = '#31708f';
+            errMsg.style.backgroundColor = '#f2dede';
+            errMsg.style.color = '#a94442';
             errMsg.style.padding = '15px';
             errMsg.style.borderRadius = '5px';
             errMsg.style.marginTop = '20px';
