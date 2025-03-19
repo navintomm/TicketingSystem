@@ -197,11 +197,7 @@ nonMbcetBtn.addEventListener("click", function () {
                 event.preventDefault(); // Prevent default link behavior
                 
                 const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-                if (/android/i.test(userAgent)) {
-                    window.location.href = gpayIntentLink; // Open Google Pay on Android
-                } else {
-                    window.location.href = upiLink; // Open default UPI app
-                }
+                
             });
         });
 
