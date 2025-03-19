@@ -179,26 +179,17 @@ nonMbcetBtn.addEventListener("click", function () {
     
           </script>
 <script>
-          document.addEventListener("DOMContentLoaded", function () {
-            const upiID = "6282527929@pthdfc"; // Your Paytm UPI ID
-            const transactionId = "T" + Date.now();
-            const orderId = "ORD" + Math.floor(Math.random() * 1000000);
-            const amount = "60.00"; // Updated amount to ₹60
-            const merchantName = "Navin";
-            const note = "Payment for Premam Re-release";
-        
-            // UPI deep link
-            const upiLink = `upi://pay?pa=${upiID}&pn=${merchantName}&tid=${transactionId}&tr=${orderId}&tn=${note}&am=${amount}&cu=INR`;
-        
-            // Google Pay specific intent link
-            const gpayIntentLink = `intent://upi/pay?pa=${upiID}&pn=${merchantName}&tid=${transactionId}&tr=${orderId}&tn=${note}&am=${amount}&cu=INR#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end;`;
-        
-            document.getElementById("gpayButton").addEventListener("click", function (event) {
-                event.preventDefault(); // Prevent default link behavior
-                
-                const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-                
-            });
+     document.addEventListener("DOMContentLoaded", function () {
+            const upiID = "6282527929@pthdfc"; // Your UPI ID
+            const amount = "60.00"; // Payment amount
+            const merchantName = "Navin"; // Your Name
+            const note = "Payment for Premam Re-release"; // Payment Note
+
+            // UPI Deep Link
+            const upiLink = `upi://pay?pa=${upiID}&pn=${merchantName}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
+
+            // Set the payment link
+            document.getElementById("upiPaymentLink").setAttribute("href", upiLink);
         });
 
 </script>
@@ -220,13 +211,9 @@ nonMbcetBtn.addEventListener("click", function () {
           <div class="container">
             <div class="box-booking">
               <label style="top: 100px;" class="grab-tickets-label">Grab your tickets</label>
-              <div style="text-align: center; margin: 20px;">
-                <h3>Scan to Pay</h3>
-                <a id="gpayButton" class="button button-lg button-gray-600">
-                  Pay ₹60 with UPI
-              </a>
-            </div>
-            <!-- <div class="qr-code-container" style="text-align: center; margin: 15px 0;">
+              <h2>Pay ₹60 via UPI</h2>
+              <a id="upiPaymentLink" href="#" class="button">Pay Now</a>
+            <!--iv class="qr-code-container" style="text-align: center; margin: 15px 0;">
                 <p>Scan QR code to pay</p>
                 <img src="/images/WhatsApp Image 2025-03-17 at 17.14.34_25c00a1f.jpg" alt="Payment QR Code" style="max-width: 150px; height: auto;">
               </div> -->
