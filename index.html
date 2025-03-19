@@ -143,7 +143,7 @@
             </script>
             
 
-<script>
+<!--<script>
   document.addEventListener("DOMContentLoaded", function () {
 const mbcetBtn = document.getElementById("mbcet-btn");
 const nonMbcetBtn = document.getElementById("nonmbcet-btn");
@@ -169,7 +169,7 @@ nonMbcetBtn.addEventListener("click", function () {
 });
 });
 
-
+-->
 
     
     
@@ -198,19 +198,18 @@ nonMbcetBtn.addEventListener("click", function () {
           <div class="container">
             <div class="box-booking">
               <label style="top: 100px;" class="grab-tickets-label">Grab your tickets</label>
-              <div class="payment-options" style="text-align: center; margin: 15px 0;">
-                <a href="upi://pay?pa=navintom209@okhdfcbank&pn=Illumina&am=60&cu=INR&tn=Premam%20Movie%20Ticket" 
-                   class="button button-lg button-gray-600">
-                   Pay ₹60 with UPI
-              </a>
-              </div>
+              <div style="text-align: center; margin: 20px;">
+                <h3>Scan to Pay</h3>
+                <img src="/images/WhatsApp Image 2025-03-19 at 08.33.42_436fac28.jpg" alt="UPI QR Code" width="250">
+                <p>Scan the QR code with any UPI app to pay ₹60 for Premam Movie Ticket.</p>
+            </div>
             <!-- <div class="qr-code-container" style="text-align: center; margin: 15px 0;">
                 <p>Scan QR code to pay</p>
                 <img src="/images/WhatsApp Image 2025-03-17 at 17.14.34_25c00a1f.jpg" alt="Payment QR Code" style="max-width: 150px; height: auto;">
               </div> -->
 
-              <button id="mbcet-btn" class="button button-lg button-gray-600">MBCET</button>
-<button id="nonmbcet-btn" class="button button-lg button-gray-600" style="bottom: 15px;;">Non MBCET</button>
+            <!--  <button id="mbcet-btn" class="button button-lg button-gray-600">MBCET</button>
+<button id="nonmbcet-btn" class="button button-lg button-gray-600" style="bottom: 15px;;">Non MBCET</button> -->
               <form class="rd-form rd-mailform booking-form" id="booking-form" novalidate>
 
                 <div>
@@ -478,6 +477,13 @@ nonMbcetBtn.addEventListener("click", function () {
                 </ul>
               </div>
             </div>
+            <p class="rights" style="margin: 15px 0; text-align: center; letter-spacing: 1px; font-size: 1.2rem; color: #9e9e9e; margin-bottom: 30px;">For any enquiries contact the number given below</p>
+    
+            <p class="rights" style="margin: 10px auto; text-align: center; letter-spacing: 1px; font-size: 1.8rem; font-weight: 600; background: linear-gradient(45deg, #6366f1, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; position: relative; display: inline-block; padding: 10px 30px;">6238420474</p>
+            
+            <p class="rights" style="margin: 10px auto; text-align: center; letter-spacing: 1px; font-size: 1.8rem; font-weight: 600; background: linear-gradient(45deg, #6366f1, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; position: relative; display: inline-block; padding: 10px 30px;">7561806745</p>
+            
+           
             <p class="rights"><span>&copy;&nbsp; </span><span class="copyright-year"></span><span>&nbsp;</span><span>Illumina All rights reserved.</span>
           </div>
         </div>
@@ -496,8 +502,14 @@ nonMbcetBtn.addEventListener("click", function () {
 <!-- Add Firebase products that you want to use -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-
+<!--<script src="config.js"></script>-->
 <!-- Then replace your existing Firebase script with this one -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const bookingForm = document.getElementById('booking-form');
@@ -539,45 +551,36 @@ document.addEventListener('DOMContentLoaded', function () {
     const db = firebase.firestore();
 
     async function clearAllBookings() {
-  try {
-    const bookingsRef = db.collection('bookings');
-    const snapshot = await bookingsRef.get();
-    
-    // Delete each document in a batch
-    const batch = db.batch();
-    snapshot.docs.forEach((doc) => {
-      batch.delete(doc.ref);
-    });
-    
-    await batch.commit();
-    console.log("All booking records have been cleared");
-    return true;
-  } catch (error) {
-    console.error("Error clearing bookings:", error);
-    return false;
-  }
-}
+        try {
+            const bookingsRef = db.collection('bookings');
+            const snapshot = await bookingsRef.get();
+            
+            // Delete each document in a batch
+            const batch = db.batch();
+            snapshot.docs.forEach((doc) => {
+                batch.delete(doc.ref);
+            });
+            
+            await batch.commit();
+            console.log("All booking records have been cleared");
+            return true;
+        } catch (error) {
+            console.error("Error clearing bookings:", error);
+            return false;
+        }
+    }
 
-// Call this once to clear all bookings
-clearAllBookings();
-
-
-    // Reset the ticket counter to 0 
-// You can run this once to reset the counter
-async function resetTicketCounter() {
-  try {
-    const counterRef = db.collection('counters').doc('tickets');
-    await counterRef.set({ value: 0 });
-    console.log("Ticket counter has been reset to 0");
-    return true;
-  } catch (error) {
-    console.error("Error resetting ticket counter:", error);
-    return false;
-  }
-}
-
-// Call this function when you want to reset
-resetTicketCounter();
+    async function resetTicketCounter() {
+        try {
+            const counterRef = db.collection('counters').doc('tickets');
+            await counterRef.set({ value: 0 });
+            console.log("Ticket counter has been reset to 0");
+            return true;
+        } catch (error) {
+            console.error("Error resetting ticket counter:", error);
+            return false;
+        }
+    }
 
     function validateForm() {
         let isValid = true;
@@ -638,15 +641,15 @@ resetTicketCounter();
         }
         
         // Validate screenshot
-       if (bookingForm.querySelector('#screenshot').style.display !== 'none'){
-    if (!screenshot) {
-        const errorEl = bookingForm.querySelector('#screenshot').closest('.form-wrap').querySelector('.error-message');
-        if (errorEl) errorEl.textContent = 'Please upload a payment screenshot';
-        isValid = false;
+        if (bookingForm.querySelector('#screenshot').style.display !== 'none'){
+            if (!screenshot) {
+                const errorEl = bookingForm.querySelector('#screenshot').closest('.form-wrap').querySelector('.error-message');
+                if (errorEl) errorEl.textContent = 'Please upload a payment screenshot';
+                isValid = false;
+            }
+        }
+        return isValid; 
     }
-  }
-  return isValid; 
-      }
     
     // Upload to Cloudinary
     async function uploadToCloudinary(file) {
@@ -706,44 +709,6 @@ resetTicketCounter();
             const timestamp = new Date().getTime();
             return 'TKTTRYDAN' + timestamp.toString().slice(-4);
         }
-        // Reset the ticket counter to 0 
-
-    }
-
-    // Function to send booking data to local backend
-    async function sendToBackend(formData) {
-        try {
-            console.log("Starting backend request...");
-            
-            const response = await fetch("http://localhost:5000/book", {
-                method: "POST",
-                body: formData,
-            });
-            
-            console.log("Backend response status:", response.status);
-            
-            // Check if response is ok, regardless of content type
-            if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Server responded with ${response.status}: ${errorText}`);
-}
-            
-            // Try to parse as JSON, but don't fail if it's not JSON
-            let result;
-            try {
-                const text = await response.text();
-                if (text.trim()) {
-                    result = JSON.parse(text);
-                }
-            } catch (e) {
-                console.log("Response is not JSON, but that's ok");
-            }
-            
-            return { success: true, data: result };
-        } catch (error) {
-            console.error("Backend connection error:", error);
-            return { success: false, error: error.message };
-        }
     }
 
     function setLoading(isLoading) {
@@ -771,7 +736,7 @@ resetTicketCounter();
             <h3>Booking Successful!</h3>
             <p>Your ticket ID is: <strong>${ticketId}</strong></p>
             <p>Please save this ticket ID. You will need it for entry.</p>
-            <p>A confirmation email has been sent to your email address.</p>
+            
         `;
         
         bookingForm.parentNode.insertBefore(successDiv, bookingForm.nextSibling);
@@ -781,6 +746,16 @@ resetTicketCounter();
         
         // Scroll to the success message
         successDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Function to remove all message elements
+    function removeAllMessages() {
+        const messages = document.querySelectorAll('#email-error-message, #email-loading-message, #phone-loading-message');
+        messages.forEach(msg => {
+            if (msg) {
+                msg.remove();
+            }
+        });
     }
     
     // Form submission handler
@@ -809,63 +784,64 @@ resetTicketCounter();
                 .limit(1)
                 .get();
                 
-                if (!existingBookingsSnapshot.empty) {
-  const emailMsg = document.createElement('div');
-  emailMsg.id = 'email-loading-message';
-  emailMsg.style.backgroundColor = '#d9edf7';
-  emailMsg.style.color = '#31708f';
-  emailMsg.style.padding = '15px';
-  emailMsg.style.borderRadius = '5px';
-  emailMsg.style.marginTop = '20px';
-  emailMsg.style.textAlign = 'center';
-  emailMsg.innerHTML = '<p>This email has already been used for a booking.</p>';
-  const bookNowButton = bookingForm.querySelector('button[type="submit"]');
-  bookNowButton.insertAdjacentElement('afterend', emailMsg);
-  
-  // Add event listener to email input to remove the message when focused
-  const emailInput = bookingForm.querySelector('input[type="email"]'); // Adjust selector to match your email input
-  emailInput.addEventListener('focus', function() {
-    const existingMsg = document.getElementById('email-loading-message');
-    if (existingMsg) {
-      existingMsg.remove();
-    }
-  });
-  
-  setLoading(false);
-  return false;
-}
+            if (!existingBookingsSnapshot.empty) {
+                const emailMsg = document.createElement('div');
+                emailMsg.id = 'email-loading-message';
+                emailMsg.style.backgroundColor = '#d9edf7';
+                emailMsg.style.color = '#31708f';
+                emailMsg.style.padding = '15px';
+                emailMsg.style.borderRadius = '5px';
+                emailMsg.style.marginTop = '20px';
+                emailMsg.style.textAlign = 'center';
+                emailMsg.innerHTML = '<p>This email has already been used for a booking.</p>';
+                
+                const bookNowButton = bookingForm.querySelector('button[type="submit"]');
+                bookNowButton.insertAdjacentElement('afterend', emailMsg);
+                
+                // Add event listener to email input to remove the message when focused
+                const emailInput = bookingForm.querySelector('input[type="email"]');
+                emailInput.addEventListener('focus', function() {
+                    const existingMsg = document.getElementById('email-loading-message');
+                    if (existingMsg) {
+                        existingMsg.remove();
+                    }
+                });
+                
+                setLoading(false);
+                return false;
+            }
             
             const existingPhoneSnapshot = await db.collection('bookings')
                 .where('phone', '==', phone)
                 .limit(1)
                 .get();
                 
-                if (!existingPhoneSnapshot.empty) {
-  const phnMsg = document.createElement('div');
-  phnMsg.id = 'phone-loading-message'; // Changed ID to be unique
-  phnMsg.style.backgroundColor = '#d9edf7';
-  phnMsg.style.color = '#31708f';
-  phnMsg.style.padding = '15px';
-  phnMsg.style.borderRadius = '5px';
-  phnMsg.style.marginTop = '20px';
-  phnMsg.style.textAlign = 'center';
-  phnMsg.innerHTML = '<p>This phone has already been used for a booking.</p>';
-  
-  const bookNowButton = bookingForm.querySelector('button[type="submit"]');
-  bookNowButton.insertAdjacentElement('afterend', phnMsg);
-  
-  // Corrected selector for phone input - use the correct type
-  const phnInput = bookingForm.querySelector('input[name="phone"]'); // or input[type="tel"]
-  phnInput.addEventListener('focus', function() {
-    const phMsg = document.getElementById('phone-loading-message'); // Match the ID
-    if (phMsg) {
-      phMsg.remove();
-    }
-  });
-  
-  setLoading(false);
-  return false;
-}
+            if (!existingPhoneSnapshot.empty) {
+                const phnMsg = document.createElement('div');
+                phnMsg.id = 'phone-loading-message';
+                phnMsg.style.backgroundColor = '#d9edf7';
+                phnMsg.style.color = '#31708f';
+                phnMsg.style.padding = '15px';
+                phnMsg.style.borderRadius = '5px';
+                phnMsg.style.marginTop = '20px';
+                phnMsg.style.textAlign = 'center';
+                phnMsg.innerHTML = '<p>This phone has already been used for a booking.</p>';
+                
+                const bookNowButton = bookingForm.querySelector('button[type="submit"]');
+                bookNowButton.insertAdjacentElement('afterend', phnMsg);
+                
+                // Corrected selector for phone input
+                const phnInput = bookingForm.querySelector('input[name="phone"]');
+                phnInput.addEventListener('focus', function() {
+                    const phMsg = document.getElementById('phone-loading-message');
+                    if (phMsg) {
+                        phMsg.remove();
+                    }
+                });
+                
+                setLoading(false);
+                return false;
+            }
             
             // Upload screenshot to Cloudinary
             console.log("Uploading screenshot...");
@@ -900,87 +876,23 @@ resetTicketCounter();
             });
             console.log("Booking saved successfully!");
             
-            // Create FormData for the backend
-            const formData = new FormData();
-            Object.entries(bookingData).forEach(([key, value]) => {
-                formData.append(key, value);
-            });
-            
-            // Show loading message
-            const loadingMsg = document.createElement('div');
-            loadingMsg.id = 'email-loading-message';
-            loadingMsg.style.backgroundColor = '#d9edf7';
-            loadingMsg.style.color = '#31708f';
-            loadingMsg.style.padding = '15px';
-            loadingMsg.style.borderRadius = '5px';
-            loadingMsg.style.marginTop = '20px';
-            loadingMsg.style.textAlign = 'center';
-            loadingMsg.innerHTML = '<p>Sending confirmation email... Please wait.</p>';
-            bookingForm.parentNode.insertBefore(loadingMsg, bookingForm.nextSibling);
-            
-            // Send to backend and wait for result
-            console.log("Sending data to backend for email...");
-            const emailResult = await sendToBackend(formData);
-            
-            // Remove loading message
-            if (document.getElementById('email-loading-message')) {
-                document.getElementById('email-loading-message').remove();
-            }
-            
-            if (!emailResult.success) {
-  const errMsg = document.createElement('div');
-  errMsg.id = 'email-error-message';
-  errMsg.style.backgroundColor = '#d9edf7';
-  errMsg.style.color = '#31708f';
-  errMsg.style.padding = '15px';
-  errMsg.style.borderRadius = '5px';
-  errMsg.style.marginTop = '20px';
-  errMsg.style.textAlign = 'center';
-  errMsg.innerHTML = '<p>Booking was saved, but there was an issue sending the confirmation email. Please contact us.</p>';
-  console.error("Email backend error:", emailResult.error);
-  
-  // Insert the error message after the "Book Now" button
-  const bookNowButton = bookingForm.querySelector('button[type="submit"]');
-  bookNowButton.insertAdjacentElement('afterend', errMsg);
-  
-  // Function to remove all message elements
-  const removeAllMessages = function() {
-    const messages = document.querySelectorAll('#email-error-message, #email-loading-message, #phone-loading-message');
-    messages.forEach(msg => {
-      if (msg) {
-        msg.remove();
-      }
-    });
-  };
-  
-  // Add event listener to the "Book Now" button
-  bookNowButton.addEventListener('click', removeAllMessages);
-  
-  // Add event listeners to all input fields
-  const allInputs = bookingForm.querySelectorAll('input, textarea, select');
-  allInputs.forEach(input => {
-    input.addEventListener('focus', removeAllMessages);
-  });
-}
-            else{
-              // Show success message only after email is sent
-              showSuccessMessage(ticketId);
-            }
-           
+            // Show success message
+            showSuccessMessage(ticketId);
             
         } catch (error) {
             console.error("Critical booking error:", error);
             const errMsg = document.createElement('div');
-  errMsg.id = 'email-loading-message';
-  errMsg.style.backgroundColor = '#d9edf7';
-  errMsg.style.color = '#31708f';
-  errMsg.style.padding = '15px';
-  errMsg.style.borderRadius = '5px';
-  errMsg.style.marginTop = '20px';
-  errMsg.style.textAlign = 'center';
-  errMsg.innerHTML = '<p>An error occurred while processing your booking. Please try again.</p>';
+            errMsg.id = 'email-loading-message';
+            errMsg.style.backgroundColor = '#d9edf7';
+            errMsg.style.color = '#31708f';
+            errMsg.style.padding = '15px';
+            errMsg.style.borderRadius = '5px';
+            errMsg.style.marginTop = '20px';
+            errMsg.style.textAlign = 'center';
+            errMsg.innerHTML = '<p>An error occurred while processing your booking. Please try again.</p>';
+            
             const bookNowButton = bookingForm.querySelector('button[type="submit"]');
-  bookNowButton.insertAdjacentElement('afterend', errMsg);
+            bookNowButton.insertAdjacentElement('afterend', errMsg);
         } finally {
             setLoading(false);
         }
@@ -999,7 +911,16 @@ resetTicketCounter();
                 handleSubmit(e);
             }
         });
+        
+        // Add event listener for removing messages
+        submitButton.addEventListener('click', removeAllMessages);
     }
+    
+    // Add event listeners to all input fields for message cleanup
+    const allInputs = bookingForm.querySelectorAll('input, textarea, select');
+    allInputs.forEach(input => {
+        input.addEventListener('focus', removeAllMessages);
+    });
     
     console.log("Booking form handlers initialized successfully");
 });
