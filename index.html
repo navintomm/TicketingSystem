@@ -178,21 +178,25 @@ nonMbcetBtn.addEventListener("click", function () {
     
     
           </script>
+
 <script>
-     document.addEventListener("DOMContentLoaded", function () {
-            const upiID = "6282527929@pthdfc"; // Your UPI ID
-            const amount = "60.00"; // Payment amount
-            const merchantName = "Navin"; // Your Name
-            const note = "Payment for Premam Re-release"; // Payment Note
-
-            // UPI Deep Link
-            const upiLink = `upi://pay?pa=${upiID}&pn=${merchantName}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
-
-            // Set the payment link
-            document.getElementById("upiPaymentLink").setAttribute("href", upiLink);
-        });
-
+ function showCopyMessage() {
+    // Copy the UPI ID to clipboard
+    var upiElement = document.getElementById('upiID');
+    upiElement.select();
+    document.execCommand('copy');
+    
+    // Show the message
+    var message = document.getElementById('copyMessage');
+    message.style.display = 'block';
+    
+    // Hide the message after 2 seconds
+    setTimeout(function() {
+        message.style.display = 'none';
+    }, 2000);
+}
 </script>
+
       <!-- Swiper-->
       <section class="section section-lg section-main-bunner section-main-bunner-filter text-center">
         <div class="main-bunner-img" style="background-image: url(&quot;images/ogpremam.jpg&quot;); background-size:cover;" ></div>
@@ -210,9 +214,19 @@ nonMbcetBtn.addEventListener("click", function () {
         <section class="section-transform-top">
           <div class="container">
             <div class="box-booking">
-              <label style="top: 100px;" class="grab-tickets-label">Grab your tickets</label>
-              <h2>Pay ₹60 via UPI</h2>
-              <a id="upiPaymentLink" href="#" class="button">Pay Now</a>
+              <label style="top: 80px;" class="grab-tickets-label">Grab your tickets</label>
+              <div style="display: inline-block; background: #fff; padding: 6px; border-radius: 5px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); margin-top: 10px; border: 1px solid #e0e0e0;">
+                  <input type="text" value="navintom209@okhdfcbank" id="upiID" readonly style="padding: 8px; border: 1px solid #ccc; border-radius: 3px; font-family: inherit; width: 200px; margin-right: 5px;">
+                  <button onclick="showCopyMessage()" style="background: #333; color: white; border: none; padding: 8px 15px; border-radius: 3px; cursor: pointer; font-weight: bold;">
+                      Copy
+                  </button>
+              </div>
+              <div id="copyMessage" style="display: none; text-align: center; color: #4CAF50; font-size: 14px; margin-top: 5px; font-weight: 500;">UPI ID copied!</div>
+              <p style=" position: relative;top: 60px;font-size: 18px; margin: 5px 0 2px 0; color: #555;">Or scan this qr code</p>
+<img src="images/upi_qr (1).png" alt="UPI QR Code" width="250" height="250" style="background-color: transparent; padding: 10px; border-radius: 8px;">
+          
+     
+   
             <!--iv class="qr-code-container" style="text-align: center; margin: 15px 0;">
                 <p>Scan QR code to pay</p>
                 <img src="/images/WhatsApp Image 2025-03-17 at 17.14.34_25c00a1f.jpg" alt="Payment QR Code" style="max-width: 150px; height: auto;">
