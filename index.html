@@ -575,9 +575,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     const db = firebase.firestore();
 
-    // Initialize EmailJS
-    // Replace with your actual EmailJS user ID
-
+    
 
     async function clearAllBookings() {
         try {
@@ -787,106 +785,64 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    
-    // Function to send confirmation email using EmailJS
-    const emailjsConfigs = [
-  {
-    userId: "e1qVT0DmPI8dQMwvJ", // Current EmailJS user ID with 190 emails remaining
-    serviceId: "service_0pkaflt",
-    templateId: "template_2dbqjgi"
-  },
-  {
-    userId: "NEW_EMAILJS_USER_ID", // New EmailJS user ID with 200 emails
-    serviceId: "NEW_SERVICE_ID", // New service ID for the second account
-    templateId: "NEW_TEMPLATE_ID" // New template ID for the second account
-  }
-];
-
-// Initialize currentConfigIndex from localStorage or default to 0
-let currentConfigIndex = parseInt(localStorage.getItem('emailjs_config_index') || '0');
-
-// Make sure index is valid (in case localStorage had an invalid value)
-if (currentConfigIndex < 0 || currentConfigIndex >= emailjsConfigs.length) {
-  currentConfigIndex = 0;
-  localStorage.setItem('emailjs_config_index', currentConfigIndex.toString());
-}
-
-const MAX_RETRY_ATTEMPTS = 3; // Set maximum retry attempts
-
-// Function to switch to the next EmailJS configuration
-function switchEmailJSConfig() {
-  if (currentConfigIndex < emailjsConfigs.length - 1) {
-    currentConfigIndex++;
-    // Save the updated index to localStorage
-    localStorage.setItem('emailjs_config_index', currentConfigIndex.toString());
-    
-    // Switch to the next configuration
-    const newConfig = emailjsConfigs[currentConfigIndex];
-    emailjs.init(newConfig.userId);
-    console.log("Switched to a new EmailJS account:", newConfig.userId);
-    return true;
-  } else {
-    console.log("All EmailJS accounts have been used. No more requests left.");
-    return false;
-  }
-}
-
-// Initialize EmailJS with the current configuration
-emailjs.init(emailjsConfigs[currentConfigIndex].userId);
-console.log(`Using EmailJS configuration #${currentConfigIndex + 1}`);
-
-async function sendConfirmationEmail(bookingData, retryCount = 0) {
-  try {
-    console.log("Sending confirmation email...");
-    const currentConfig = emailjsConfigs[currentConfigIndex];
-    
-    const templateParams = {
-      email: bookingData.email,
-      name: bookingData.name,
-      finalTicketId: bookingData.ticketId,
-      eventName: bookingData.eventName,
-      eventDate: bookingData.eventDate,
-      eventTime: bookingData.eventTime,
-      eventVenue: bookingData.eventVenue,
-      phone: bookingData.phone,
-      branch: bookingData.branch,
-      semester: bookingData.semester
-    };
-    
-    const response = await emailjs.send(
-      currentConfig.serviceId,
-      currentConfig.templateId,
-      templateParams,
-      currentConfig.userId
-    );
-    
-    console.log("Email sent successfully:", response);
-    return true;
-  } catch (error) {
-    console.error("Error sending email:", error);
-    
-    // More robust error detection for quota issues
-    const isQuotaError = (error.text && (
-      error.text.includes("quota exceeded") || 
-      error.text.includes("daily limit") || 
-      error.text.includes("monthly limit")
-    )) || (error.status === 429); // Common HTTP status for rate limiting
-    
-    // Check if the error is due to API quota limit
-    if (isQuotaError && retryCount < MAX_RETRY_ATTEMPTS) {
-      console.log(`API quota exceeded. Attempt ${retryCount + 1}/${MAX_RETRY_ATTEMPTS}`);
-      
-      // Try to switch to next configuration
-      if (switchEmailJSConfig()) {
-        return sendConfirmationEmail(bookingData, retryCount + 1); // Retry with the new configuration
-      }
+    async function sendConfirmationEmail(bookingData) {
+    try {
+        console.log("Attempting to send confirmation email for ticket:", bookingData.ticketId);
+        
+        // Format the booking data for sending to Google Apps Script
+        const formData = new FormData();
+        
+        // Add all required fields to the form data
+        formData.append('email', bookingData.email);
+        formData.append('name', bookingData.name);
+        formData.append('ticketId', bookingData.ticketId);
+        formData.append('phone', bookingData.phone);
+        formData.append('branch', bookingData.branch);
+        formData.append('semester', bookingData.semester);
+        formData.append('eventName', bookingData.eventName);
+        formData.append('eventDate', bookingData.eventDate);
+        formData.append('eventTime', bookingData.eventTime);
+        formData.append('eventVenue', bookingData.eventVenue);
+        
+        // The Google Apps Script web app URL - replace with your deployed script URL
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbz4TjyyHZaEhiyTGmNxDVyklqdn_H6WmfH0xW5tRlTSc6GgHCZXwktGEqseZFsMBjm70Q/exec';
+        
+        // Send the email data to the Google Apps Script
+        const response = await fetch(scriptUrl, {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors'  // Important for cross-origin requests
+        });
+        
+        console.log('Email request sent to Google Apps Script');
+        
+        // Also save the email information to Firestore for backup
+        await db.collection('emailLog').add({
+            ticketId: bookingData.ticketId,
+            email: bookingData.email,
+            name: bookingData.name,
+            sentAt: firebase.firestore.FieldValue.serverTimestamp(),
+            status: 'requested'
+        });
+        
+        return true;
+    } catch (error) {
+        console.error('Error sending confirmation email:', error);
+        
+        // Log the error to Firestore
+        await db.collection('emailLog').add({
+            ticketId: bookingData.ticketId,
+            email: bookingData.email,
+            name: bookingData.name,
+            sentAt: firebase.firestore.FieldValue.serverTimestamp(),
+            status: 'error',
+            errorMessage: error.message
+        });
+        
+        return false;
     }
-    
-    // If the error is not related to the quota or we've exceeded retry attempts
-    return false;
-  }
 }
-    
+
     // Form submission handler
     async function handleSubmit(e) {
         e.preventDefault();
