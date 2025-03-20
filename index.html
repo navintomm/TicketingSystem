@@ -238,7 +238,7 @@ nonMbcetBtn.addEventListener("click", function () {
               <form class="rd-form rd-mailform booking-form" id="booking-form" novalidate>
 
                 <div>
-                    <p class="booking-title">Name</p>
+                    <p class="booking-title">Full Name</p>
                     <div class="form-wrap">
                         <input class="form-input" id="booking-name" type="text" name="name" required placeholder="Enter your name">
                         <label class="form-label" for="booking-name"></label>
@@ -932,10 +932,113 @@ function checkAdminAccess() {
         const branch = bookingForm.querySelector('#booking-branch')?.value || "Non-MBCET";
         const semester = bookingForm.querySelector('#booking-semester')?.value || "N/A";
         const screenshot = bookingForm.querySelector('#screenshot').files[0];
+
+
+// Check for existing bookings with the same name
+const nameBookingsSnapshot = await db.collection('bookings')
+  .where('name', '==', name)
+  .limit(1)
+  .get();
+
+if (!nameBookingsSnapshot.empty) {
+  const nameMsg = document.createElement('div');
+  nameMsg.id = 'name-loading-message';
+  nameMsg.style.backgroundColor = '#d9edf7';
+  nameMsg.style.color = '#31708f';
+  nameMsg.style.padding = '15px';
+  nameMsg.style.borderRadius = '5px';
+  nameMsg.style.marginTop = '20px';
+  nameMsg.style.textAlign = 'center';
+  nameMsg.innerHTML = '<p>This name has already been used for a booking.</p>';
+  
+  const bookNowButton = bookingForm.querySelector('button[type="submit"]');
+  bookNowButton.insertAdjacentElement('afterend', nameMsg);
+  
+  // Add event listener to name input to remove the message when focused
+  const nameInput = bookingForm.querySelector('#booking-name'); // Adjust selector to match your name input
+  nameInput.addEventListener('focus', function() {
+    const existingMsg = document.getElementById('name-loading-message');
+    if (existingMsg) {
+      existingMsg.remove();
+    }
+  });
+  
+  setLoading(false);
+  return false;
+}
+
+
         
         // Check email/phone uniqueness (unchanged)
-        // ... (email and phone checks remain the same) ...
+        const existingBookingsSnapshot = await db.collection('bookings')
+                .where('email', '==', email)
+                .limit(1)
+                .get();
+                
+                if (!existingBookingsSnapshot.empty) {
+  const emailMsg = document.createElement('div');
+  emailMsg.id = 'email-loading-message';
+  emailMsg.style.backgroundColor = '#d9edf7';
+  emailMsg.style.color = '#31708f';
+  emailMsg.style.padding = '15px';
+  emailMsg.style.borderRadius = '5px';
+  emailMsg.style.marginTop = '20px';
+  emailMsg.style.textAlign = 'center';
+  emailMsg.innerHTML = '<p>This email has already been used for a booking.</p>';
+  const bookNowButton = bookingForm.querySelector('button[type="submit"]');
+  bookNowButton.insertAdjacentElement('afterend', emailMsg);
+  
+  // Add event listener to email input to remove the message when focused
+  const emailInput = bookingForm.querySelector('input[type="email"]'); // Adjust selector to match your email input
+  emailInput.addEventListener('focus', function() {
+    const existingMsg = document.getElementById('email-loading-message');
+    if (existingMsg) {
+      existingMsg.remove();
+    }
+  });
+  
+  setLoading(false);
+  return false;
+}
+            
 
+        // ... (email and phone checks remain the same) ...
+      
+
+        const existingPhoneSnapshot = await db.collection('bookings')
+                .where('phone', '==', phone)
+                .limit(1)
+                .get();
+                
+                if (!existingPhoneSnapshot.empty) {
+  const phnMsg = document.createElement('div');
+  phnMsg.id = 'phone-loading-message'; // Changed ID to be unique
+  phnMsg.style.backgroundColor = '#d9edf7';
+  phnMsg.style.color = '#31708f';
+  phnMsg.style.padding = '15px';
+  phnMsg.style.borderRadius = '5px';
+  phnMsg.style.marginTop = '20px';
+  phnMsg.style.textAlign = 'center';
+  phnMsg.innerHTML = '<p>This phone has already been used for a booking.</p>';
+  
+  const bookNowButton = bookingForm.querySelector('button[type="submit"]');
+  bookNowButton.insertAdjacentElement('afterend', phnMsg);
+  
+  // Corrected selector for phone input - use the correct type
+  const phnInput = bookingForm.querySelector('input[name="phone"]'); // or input[type="tel"]
+  phnInput.addEventListener('focus', function() {
+    const phMsg = document.getElementById('phone-loading-message'); // Match the ID
+    if (phMsg) {
+      phMsg.remove();
+    }
+  });
+  
+  setLoading(false);
+  return false;
+}
+
+
+        
         // Generate ticket ID and check limit
         const ticketId = await generateUniqueTicketId(); // This will throw if limit is reached
         
