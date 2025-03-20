@@ -301,7 +301,7 @@ nonMbcetBtn.addEventListener("click", function () {
                     </div>
                 </div>
                 <div class="file-input-container">
-                  <p class="booking-title">Upload</p>
+                  <p class="booking-title">Upload Payment Screenshot</p>
                   <div class="form-wrap">
                     <input type="file" id="screenshot" name="screenshot" class="file-input" required>
               </div>
@@ -311,7 +311,7 @@ nonMbcetBtn.addEventListener("click", function () {
                 </div>
             </form>
             
-            <style>
+            <style>  
                 .form-input, select {
                     width: 100%;
                     padding: 8px;
@@ -877,7 +877,7 @@ function checkAdminAccess() {
             <h3>Booking Successful!</h3>
             <p>Your ticket ID is: <strong>${ticketId}</strong></p>
             <p>Please save this ticket ID. You will need it for entry.</p>
-            <p>Confirmation email will been sent to your email address after reviewing the screenshots.</p>
+            <p>Confirmation email will be sent to your email address after verifying the screenshot.</p>
             <p>Check your spam mail also.</p>
         `;
         
@@ -942,14 +942,15 @@ const nameBookingsSnapshot = await db.collection('bookings')
 
 if (!nameBookingsSnapshot.empty) {
   const nameMsg = document.createElement('div');
-  nameMsg.id = 'name-loading-message';
-  nameMsg.style.backgroundColor = '#d9edf7';
-  nameMsg.style.color = '#31708f';
-  nameMsg.style.padding = '15px';
-  nameMsg.style.borderRadius = '5px';
-  nameMsg.style.marginTop = '20px';
-  nameMsg.style.textAlign = 'center';
-  nameMsg.innerHTML = '<p>This name has already been used for a booking.</p>';
+nameMsg.id = 'name-loading-message';
+nameMsg.style.backgroundColor = '#fcf8e3'; // Warning yellow background
+nameMsg.style.color = '#8a6d3b';          // Warning text color
+nameMsg.style.padding = '15px';
+nameMsg.style.borderRadius = '5px';
+nameMsg.style.marginTop = '20px';
+nameMsg.style.textAlign = 'center';
+nameMsg.style.border = '1px solid #faebcc'; // Light border
+nameMsg.innerHTML = '<p>⚠ This name has already been used for a booking.</p>';
   
   const bookNowButton = bookingForm.querySelector('button[type="submit"]');
   bookNowButton.insertAdjacentElement('afterend', nameMsg);
@@ -976,15 +977,16 @@ if (!nameBookingsSnapshot.empty) {
                 .get();
                 
                 if (!existingBookingsSnapshot.empty) {
-  const emailMsg = document.createElement('div');
-  emailMsg.id = 'email-loading-message';
-  emailMsg.style.backgroundColor = '#d9edf7';
-  emailMsg.style.color = '#31708f';
-  emailMsg.style.padding = '15px';
-  emailMsg.style.borderRadius = '5px';
-  emailMsg.style.marginTop = '20px';
-  emailMsg.style.textAlign = 'center';
-  emailMsg.innerHTML = '<p>This email has already been used for a booking.</p>';
+                  const emailMsg = document.createElement('div');
+emailMsg.id = 'email-loading-message';
+emailMsg.style.backgroundColor = '#fcf8e3'; // Warning yellow background
+emailMsg.style.color = '#8a6d3b';          // Warning text color
+emailMsg.style.padding = '15px';
+emailMsg.style.borderRadius = '5px';
+emailMsg.style.marginTop = '20px';
+emailMsg.style.textAlign = 'center';
+emailMsg.style.border = '1px solid #faebcc'; // Light border
+  emailMsg.innerHTML = '<p>⚠This email has already been used for a booking.Please use another one.</p>';
   const bookNowButton = bookingForm.querySelector('button[type="submit"]');
   bookNowButton.insertAdjacentElement('afterend', emailMsg);
   
@@ -1011,15 +1013,16 @@ if (!nameBookingsSnapshot.empty) {
                 .get();
                 
                 if (!existingPhoneSnapshot.empty) {
-  const phnMsg = document.createElement('div');
-  phnMsg.id = 'phone-loading-message'; // Changed ID to be unique
-  phnMsg.style.backgroundColor = '#d9edf7';
-  phnMsg.style.color = '#31708f';
-  phnMsg.style.padding = '15px';
-  phnMsg.style.borderRadius = '5px';
-  phnMsg.style.marginTop = '20px';
-  phnMsg.style.textAlign = 'center';
-  phnMsg.innerHTML = '<p>This phone has already been used for a booking.</p>';
+                  const phnMsg = document.createElement('div');
+phnMsg.id = 'phone-loading-message';
+phnMsg.style.backgroundColor = '#fcf8e3'; // Warning yellow background
+phnMsg.style.color = '#8a6d3b';          // Warning text color
+phnMsg.style.padding = '15px';
+phnMsg.style.borderRadius = '5px';
+phnMsg.style.marginTop = '20px';
+phnMsg.style.textAlign = 'center';
+phnMsg.style.border = '1px solid #faebcc'; // Light border
+  phnMsg.innerHTML = '<p>⚠This phone has already been used for a booking.Please use with another one.</p>';
   
   const bookNowButton = bookingForm.querySelector('button[type="submit"]');
   bookNowButton.insertAdjacentElement('afterend', phnMsg);
