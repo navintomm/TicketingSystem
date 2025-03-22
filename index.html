@@ -50,7 +50,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: #000000; /* Black background matching TEDx */
+  background: #fff; /* Black background matching TEDx */
   z-index: 9999;
   display: flex;
   justify-content: center;
@@ -69,16 +69,16 @@
 
 .premam-loader {
   display: flex;
-  gap: 2px; /* Tight spacing to mimic TEDx's compact logo */
+  gap: 2px; /* Tight spacing to mimic TEDx */
 }
 
 .premam-loader span {
   font-family: 'Futura', 'Montserrat', sans-serif; /* Futura for TEDx style, Montserrat as fallback */
   font-size: 3rem; /* Matches the bold, large appearance of TEDx */
   font-weight: 700; /* Bold weight */
-  color: #e62b1e; /* TEDx red */
+  color: #800080,; /* TEDx red */
   opacity: 0; /* Start hidden for reveal effect */
-  animation: revealScale 1.5s ease-in-out infinite;
+  animation: revealScale 1.5s ease-in-out 2; /* Run for 2 cycles (3s total) */
 }
 
 /* Staggered animation delays for a sequential reveal */
@@ -102,6 +102,17 @@
     opacity: 0;
     transform: scale(0.8); /* Back to smaller */
   }
+}
+
+/* Ensure the page content is hidden initially */
+.page-content {
+  opacity: 0;
+  transition: opacity 0.5s ease; /* Smooth fade-in for content */
+}
+
+.page-content.visible {
+  display: block;
+  opacity: 1;
 }
         /* Desktop View */
         @media (min-width: 768px) {
@@ -192,17 +203,59 @@
         
         
               </style>
-        <script>
-          document.addEventListener("DOMContentLoaded", function () {
-            setTimeout(() => {
-              const preloader = document.querySelector('.preloader');
-              preloader.classList.add('hidden');
-              preloader.addEventListener('transitionend', () => {
-                preloader.style.display = 'none';
-              });
-            }, 2000); // 2-second delay for demo; adjust as needed
-          });
-        </script>
+ <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const preloader = document.querySelector('.preloader');
+    const pageContent = document.querySelector('.page-content');
+
+    // Minimum display time for the preloader (in milliseconds)
+    const minimumDisplayTime = 3600; // 3.6s (2 cycles of 1.5s + 0.6s delay for the last letter)
+
+    // Record the start time
+    const startTime = Date.now();
+
+    // Function to show content after preloader
+    function showContent() {
+      // Fade out the preloader
+      preloader.classList.add('hidden');
+
+      // After the preloader fade-out transition ends, show the content
+      preloader.addEventListener('transitionend', () => {
+        preloader.style.display = 'none'; // Remove preloader from DOM
+        pageContent.classList.add('visible'); // Show the main content
+      }, { once: true }); // Ensure the event listener runs only once
+    }
+
+    // Check if the page is already loaded
+    if (document.readyState === 'complete') {
+      // Page is already loaded; enforce minimum display time
+      const elapsedTime = Date.now() - startTime;
+      const remainingTime = minimumDisplayTime - elapsedTime;
+
+      if (remainingTime > 0) {
+        // Wait for the remaining time before showing content
+        setTimeout(showContent, remainingTime);
+      } else {
+        // Show content immediately if minimum time has already passed
+        showContent();
+      }
+    } else {
+      // Page is not yet fully loaded; wait for load event
+      window.addEventListener('load', () => {
+        const elapsedTime = Date.now() - startTime;
+        const remainingTime = minimumDisplayTime - elapsedTime;
+
+        if (remainingTime > 0) {
+          // Wait for the remaining time before showing content
+          setTimeout(showContent, remainingTime);
+        } else {
+          // Show content immediately if minimum time has already passed
+          showContent();
+        }
+      });
+    }
+  });
+</script>
              
             
              <script>
