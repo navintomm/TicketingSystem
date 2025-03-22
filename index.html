@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap">
     <link rel="icon" href="images/image-removebg-preview.png" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Poppins:300,300i,400,500,600,700,800,900,900i%7CPT+Serif:400,700">
     <link rel="stylesheet" href="css/bootstrap.css">
@@ -16,10 +17,14 @@
     
     <div class="preloader">
       <div class="preloader-body">
-        <div class="cssload-container">
-          <div class="cssload-speeding-wheel"></div>
+        <div class="premam-loader">
+          <span>P</span>
+          <span>r</span>
+          <span>e</span>
+          <span>m</span>
+          <span>a</span>
+          <span>m</span>
         </div>
-        <p>Loading...</p>
       </div>
     </div>
     <div class="page"><a class="section section-banner d-none d-xl-flex" href="" style="" alt="" width="1600" height="310"></a>
@@ -28,9 +33,76 @@
        
         
       </header>
-
+      <style>
+        @font-face {
+          font-family: 'Futura';
+          src: url('path-to-futura-font/Futura-Bold.woff2') format('woff2'),
+               url('path-to-futura-font/Futura-Bold.woff') format('woff');
+          font-weight: 700;
+          font-style: normal;
+        }
+      </style>
 
       <style>
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000; /* Black background matching TEDx */
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease;
+}
+
+.preloader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.preloader-body {
+  text-align: center;
+}
+
+.premam-loader {
+  display: flex;
+  gap: 2px; /* Tight spacing to mimic TEDx's compact logo */
+}
+
+.premam-loader span {
+  font-family: 'Futura', 'Montserrat', sans-serif; /* Futura for TEDx style, Montserrat as fallback */
+  font-size: 3rem; /* Matches the bold, large appearance of TEDx */
+  font-weight: 700; /* Bold weight */
+  color: #e62b1e; /* TEDx red */
+  opacity: 0; /* Start hidden for reveal effect */
+  animation: revealScale 1.5s ease-in-out infinite;
+}
+
+/* Staggered animation delays for a sequential reveal */
+.premam-loader span:nth-child(1) { animation-delay: 0.1s; }
+.premam-loader span:nth-child(2) { animation-delay: 0.2s; }
+.premam-loader span:nth-child(3) { animation-delay: 0.3s; }
+.premam-loader span:nth-child(4) { animation-delay: 0.4s; }
+.premam-loader span:nth-child(5) { animation-delay: 0.5s; }
+.premam-loader span:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes revealScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8); /* Start slightly smaller */
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1); /* Full size at peak */
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8); /* Back to smaller */
+  }
+}
         /* Desktop View */
         @media (min-width: 768px) {
             .box-booking {
@@ -120,7 +192,17 @@
         
         
               </style>
-             
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(() => {
+              const preloader = document.querySelector('.preloader');
+              preloader.classList.add('hidden');
+              preloader.addEventListener('transitionend', () => {
+                preloader.style.display = 'none';
+              });
+            }, 2000); // 2-second delay for demo; adjust as needed
+          });
+        </script>
              
             
              <script>
@@ -216,7 +298,7 @@ nonMbcetBtn.addEventListener("click", function () {
             <div class="box-booking">
               <label style="top: 80px;" class="grab-tickets-label">Grab your tickets</label>
               
-              <div style="display: inline-block; background: #fff; padding: 6px; border-radius: 5px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); margin-top: 10px; border: 1px solid #e0e0e0;">
+             <div style="display: inline-block; background: #fff; padding: 6px; border-radius: 5px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); margin-top: 10px; border: 1px solid #e0e0e0;">
                   <input type="text" value="navintom209@okhdfcbank" id="upiID" readonly style="padding: 8px; border: 1px solid #ccc; border-radius: 3px; font-family: inherit; width: 200px; margin-right: 5px;">
                   <button onclick="showCopyMessage()" style="background: #333; color: white; border: none; padding: 8px 15px; border-radius: 3px; cursor: pointer; font-weight: bold;">
                       Copy
@@ -300,6 +382,11 @@ nonMbcetBtn.addEventListener("click", function () {
                         <span class="error-message"></span>
                     </div>
                 </div>
+               
+
+
+
+
                 <div class="file-input-container">
                   <p class="booking-title">Upload Payment Screenshot</p>
                   <div class="form-wrap">
@@ -1022,7 +1109,7 @@ phnMsg.style.borderRadius = '5px';
 phnMsg.style.marginTop = '20px';
 phnMsg.style.textAlign = 'center';
 phnMsg.style.border = '1px solid #faebcc'; // Light border
-  phnMsg.innerHTML = '<p>⚠This phone has already been used for a booking.Please use with another one.</p>';
+  phnMsg.innerHTML = '<p>⚠This phone has already been used for a booking.Please use  another one.</p>';
   
   const bookNowButton = bookingForm.querySelector('button[type="submit"]');
   bookNowButton.insertAdjacentElement('afterend', phnMsg);
