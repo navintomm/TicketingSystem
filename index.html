@@ -311,23 +311,59 @@ nonMbcetBtn.addEventListener("click", function () {
     
           </script>
 
-<script>
- function showCopyMessage() {
-    // Copy the UPI ID to clipboard
-    var upiElement = document.getElementById('upiID');
-    upiElement.select();
-    document.execCommand('copy');
-    
-    // Show the message
-    var message = document.getElementById('copyMessage');
-    message.style.display = 'block';
-    
-    // Hide the message after 2 seconds
-    setTimeout(function() {
-        message.style.display = 'none';
-    }, 2000);
-}
-</script>
+          <script>
+            function showCopyMessage(event, messageId) {
+                // Prevent any default button behavior
+                if (event) event.preventDefault();
+                
+                // Get the input element (sibling of the button that was clicked)
+                var inputElement = event.target.previousElementSibling;
+                var upiText = inputElement.value;
+                
+                // Use the modern clipboard API if available
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(upiText)
+                        .then(() => {
+                            // Show success message using the passed messageId
+                            var message = document.getElementById(messageId);
+                            message.style.display = 'block';
+                            
+                            // Hide the message after 2 seconds
+                            setTimeout(function() {
+                                message.style.display = 'none';
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Failed to copy: ', err);
+                        });
+                } else {
+                    // Fallback for older browsers
+                    var tempInput = document.createElement('textarea');
+                    tempInput.value = upiText;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    
+                    try {
+                        document.execCommand('copy');
+                        // Show success message using the passed messageId
+                        var message = document.getElementById(messageId);
+                        message.style.display = 'block';
+                        
+                        // Hide the message after 2 seconds
+                        setTimeout(function() {
+                            message.style.display = 'none';
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Failed to copy: ', err);
+                    }
+                    
+                    document.body.removeChild(tempInput);
+                }
+                
+                // Return false to prevent form submission or other events
+                return false;
+            }
+            </script>
 
       <!-- Swiper-->
       <section class="section section-lg section-main-bunner section-main-bunner-filter text-center">
@@ -348,15 +384,15 @@ nonMbcetBtn.addEventListener("click", function () {
             <div class="box-booking">
               <label style="top: 80px;" class="grab-tickets-label">Grab your tickets</label>
               
-             <div style="display: inline-block; background: #fff; padding: 6px; border-radius: 5px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); margin-top: 10px; border: 1px solid #e0e0e0;">
+            <!-- <div style="display: inline-block; background: #fff; padding: 6px; border-radius: 5px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); margin-top: 10px; border: 1px solid #e0e0e0;">
                   <input type="text" value="navintom209@okhdfcbank" id="upiID" readonly style="padding: 8px; border: 1px solid #ccc; border-radius: 3px; font-family: inherit; width: 200px; margin-right: 5px;">
                   <button onclick="showCopyMessage()" style="background: #333; color: white; border: none; padding: 8px 15px; border-radius: 3px; cursor: pointer; font-weight: bold;">
                       Copy
                   </button>
-              </div>
+              </div>-->
               <div id="copyMessage" style="display: none; text-align: center; color: #4CAF50; font-size: 14px; margin-top: 5px; font-weight: 500;">UPI ID copied!</div>
-              <p style=" position: relative;top: 60px;font-size: 18px; margin: 5px 0 2px 0; color: #555;">Pay ₹60</p>
-<img src="images/upi_qr (1).png" alt="UPI QR Code" width="250" height="250" style="background-color: transparent; padding: 10px; border-radius: 8px;">
+            <!--  <p style=" position: relative;top: 60px;font-size: 18px; margin: 5px 0 2px 0; color: #555;">Pay ₹60</p>
+<img src="images/upi_qr (1).png" alt="UPI QR Code" width="250" height="250" style="background-color: transparent; padding: 10px; border-radius: 8px;">-->
           
      
    
@@ -433,8 +469,32 @@ nonMbcetBtn.addEventListener("click", function () {
                     </div>
                 </div>
                
+             <!-- Replace the existing UPI input containers with these updated ones -->
 
+<!-- First UPI container -->
+<div style="display: flex; flex-direction: column; background: #fff; padding: 6px; border-radius: 5px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); margin-top: 10px; border: 1px solid #e0e0e0; width: fit-content;">
+  <div style="display: flex; align-items: center;">
+    <input type="text" value="navintom209@okhdfcbank" id="upiID1" readonly style="padding: 8px; border: 1px solid #ccc; border-radius: 3px; font-family: inherit; width: 250px;">
+    <button onclick="return showCopyMessage(event, 'copyMessage1')" style="background: #333; color: white; border: none; padding: 8px 15px; border-radius: 3px; cursor: pointer; font-weight: bold; margin-left: 5px;">
+      Copy
+    </button>
+  </div>
+  <div id="copyMessage1" style="display: none; text-align: center; color: #4CAF50; font-size: 14px; margin-top: 5px; font-weight: 500;">UPI ID copied!</div>
+</div>
 
+<!-- Second UPI container -->
+<div style="display: flex; flex-direction: column; background: #fff; padding: 6px; border-radius: 5px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); margin-top: 10px; border: 1px solid #e0e0e0; width: fit-content;">
+  <div style="display: flex; align-items: center;">
+    <input type="text" value="manurajms0505@okicici" id="upiID2" readonly style="padding: 8px; border: 1px solid #ccc; border-radius: 3px; font-family: inherit; width: 250px;">
+    <button onclick="return showCopyMessage(event, 'copyMessage2')" style="background: #333; color: white; border: none; padding: 8px 15px; border-radius: 3px; cursor: pointer; font-weight: bold; margin-left: 5px;">
+      Copy
+    </button>
+  </div>
+  <div id="copyMessage2" style="display: none; text-align: center; color: #4CAF50; font-size: 14px; margin-top: 5px; font-weight: 500;">UPI ID copied!</div>
+</div>
+
+<!-- You can also remove the original copyMessage div if it exists elsewhere in the page -->
+<!-- <div id="copyMessage" style="display: none; text-align: center; color: #4CAF50; font-size: 14px; margin-top: 5px; font-weight: 500;">UPI ID copied!</div> -->
 
 
                 <div class="file-input-container">
