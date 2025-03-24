@@ -907,7 +907,7 @@ function checkAdminAccess() {
             return false;
         }
     }
-   clearAllBookings();
+   //clearAllBookings();
     async function resetTicketCounter() {
         try {
             const counterRef = db.collection('counters').doc('tickets');
@@ -919,7 +919,7 @@ function checkAdminAccess() {
             return false;
         }
     }
-resetTicketCounter();
+//resetTicketCounter();
     function validateForm() {
         let isValid = true;
         const errorMessages = bookingForm.querySelectorAll('.error-message');
@@ -1019,7 +1019,7 @@ resetTicketCounter();
     const bookingsSnapshot = await db.collection('bookings').get();
     const bookingCount = bookingsSnapshot.size;
     
-    if (bookingCount >= 250) {
+    if (bookingCount >= 221) {
         throw new Error('Booking limit reached');
     }
     
