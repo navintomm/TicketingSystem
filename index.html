@@ -728,14 +728,6 @@ nonMbcetBtn.addEventListener("click", function () {
     <!-- Add these Firebase SDK script tags right before your closing </body> tag -->
 <!-- First add the core Firebase JS SDK -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-
-<!-- Add Firebase products that you want to use -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-<!--<script src="config.js"></script>-->
-<!-- Then replace your existing Firebase script with this one -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-
 <!-- Add Firebase products that you want to use -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
@@ -915,7 +907,7 @@ function checkAdminAccess() {
             return false;
         }
     }
-   //clearAllBookings();
+   clearAllBookings();
     async function resetTicketCounter() {
         try {
             const counterRef = db.collection('counters').doc('tickets');
@@ -927,7 +919,7 @@ function checkAdminAccess() {
             return false;
         }
     }
-//resetTicketCounter();
+resetTicketCounter();
     function validateForm() {
         let isValid = true;
         const errorMessages = bookingForm.querySelectorAll('.error-message');
@@ -1023,39 +1015,47 @@ function checkAdminAccess() {
     
     // Generate a unique FCFS ticket ID
     async function generateUniqueTicketId() {
-        // Get counter document
-        const counterRef = db.collection('counters').doc('tickets');
-        
-        // Use a transaction to ensure we get a unique, sequential number
-        try {
-            const ticketNum = await db.runTransaction(async (transaction) => {
-                const counterDoc = await transaction.get(counterRef);
-                
-                // If counter document doesn't exist, create it with initial value
-                if (!counterDoc.exists) {
-                    transaction.set(counterRef, { value: 1 });
-                    return 1;
-                }
-                
-                // Get current value and increment by 1
-                const currentValue = counterDoc.data().value;
-                const nextValue = currentValue + 1;
-                
-                // Update the counter in the database
-                transaction.update(counterRef, { value: nextValue });
-                
-                return nextValue;
-            });
-            
-            // Format as TKT followed by 4-digit padded number
-            return 'TKTRYDAN' + String(ticketNum).padStart(4, '0');
-        } catch (error) {
-            console.error("Error generating ticket ID:", error);
-            // Fallback to timestamp-based ID if transaction fails
-            const timestamp = new Date().getTime();
-            return 'TKTTRYDAN' + timestamp.toString().slice(-4);
-        }
+    // Check if booking limit is reached
+    const bookingsSnapshot = await db.collection('bookings').get();
+    const bookingCount = bookingsSnapshot.size;
+    
+    if (bookingCount >= 250) {
+        throw new Error('Booking limit reached');
     }
+    
+    // Get counter document
+    const counterRef = db.collection('counters').doc('tickets');
+    
+    // Use a transaction to ensure we get a unique, sequential number
+    try {
+        const ticketNum = await db.runTransaction(async (transaction) => {
+            const counterDoc = await transaction.get(counterRef);
+            
+            // If counter document doesn't exist, create it with initial value
+            if (!counterDoc.exists) {
+                transaction.set(counterRef, { value: 1 });
+                return 1;
+            }
+            
+            // Get current value and increment by 1
+            const currentValue = counterDoc.data().value;
+            const nextValue = currentValue + 1;
+            
+            // Update the counter in the database
+            transaction.update(counterRef, { value: nextValue });
+            
+            return nextValue;
+        });
+        
+        // Format as TKT followed by 4-digit padded number
+        return 'TKTRYDAN' + String(ticketNum).padStart(4, '0');
+    } catch (error) {
+        console.error("Error generating ticket ID:", error);
+        // Fallback to timestamp-based ID if transaction fails
+        const timestamp = new Date().getTime();
+        return 'TKTTRYDAN' + timestamp.toString().slice(-4);
+    }
+}
 
     function setLoading(isLoading) {
         const submitBtn = bookingForm.querySelector('button[type="submit"]');
